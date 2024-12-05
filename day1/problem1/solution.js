@@ -44,3 +44,7 @@ firstList.map((firstValue, index) => {
 })
 
 console.log("The total sum of differences between the two compared lists: ", sumOfDifferences)
+/*
+    Solves the problem with: 2970687
+    "That's the right answer! You are one gold star closer to finding the Chief Historian."
+*/
