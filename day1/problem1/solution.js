@@ -10,7 +10,7 @@ async function processInputFile() {
     let secondList = [];
     
     const rl = readline.createInterface({
-        input: fs.createReadStream('./input.txt'),
+        input: fs.createReadStream('./../input.txt'),
         output: process.stdout,
         terminal: false
     });
