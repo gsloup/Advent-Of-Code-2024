@@ -2,8 +2,8 @@ import fs from 'fs';
 import readline from 'readline';
 
 /*
-    Reads the input.txt file line by line, sorting the left and right column
-        of numbers into their own array
+    Reads the input.txt file line by line, sorting the left
+        and right column of numbers into their own array
 */
 async function processInputFile() {
     let firstList = [];
@@ -37,14 +37,18 @@ secondList.sort(function(a, b){return a-b});
 
 let sumOfDifferences = 0;
 
-// Compare each corresponding value from one list to the other, adding the differences between them
+// Compare each corresponding value from one list to the
+//     other, adding the differences between them
 firstList.map((firstValue, index) => {
     const secondValue = secondList[index];
     sumOfDifferences += Math.abs(firstValue - secondValue);
 })
 
-console.log("The total sum of differences between the two compared lists: ", sumOfDifferences)
+console.log("Total sum of differences between the 2 lists: ", sumOfDifferences)
+
 /*
-    Solves the problem with: 2970687
-    "That's the right answer! You are one gold star closer to finding the Chief Historian."
+
+Solves the problem with: 2970687
+"That's the right answer! You are one gold star closer to finding the Chief Historian."
+
 */
