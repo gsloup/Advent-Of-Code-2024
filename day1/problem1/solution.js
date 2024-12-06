@@ -5,7 +5,7 @@ import readline from 'readline';
     Reads the input.txt file line by line, sorting the left
         and right column of numbers into their own array
 */
-async function processInputFile() {
+export async function processInputFile() {
     let firstList = [];
     let secondList = [];
     
