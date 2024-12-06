@@ -6,14 +6,13 @@ const { firstList, secondList } = await processInputFile();
 let totalSum = 0;
 let secondListObj = countOccurrences(secondList)
 
+// add the duplicate nums * their occurences
 firstList.map((value) => {
     if (value in secondListObj) {
         console.log("Value", value, "exists", secondListObj[value], "times")
         totalSum += (value * secondListObj[value])
     }
 });
-
-console.log(totalSum)
 
 /*
     Creates an object where:
@@ -32,6 +31,6 @@ console.log("Answer:", totalSum)
 
 /*
     Answer: 23963899
-That's the right answer! You are one gold star closer to finding the Chief Historian
-You have completed Day 1!
+    That's the right answer! You are one gold star closer to finding the Chief Historian
+    You have completed Day 1!
 */
