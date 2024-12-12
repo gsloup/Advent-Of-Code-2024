@@ -1,67 +1,65 @@
-// import fs from 'fs';
-// import readline from 'readline';
+import fs from 'fs';
+import readline from 'readline';
 
-// export async function processInputFile() {
-//     let reports = [];
+export async function processInputFile() {
+    let reports = [];
 
-//     const rl = readline.createInterface({
-//         input: fs.createReadStream('./../input.txt'),
-//         output: process.stdout,
-//         terminal: false
-//     });
+    const rl = readline.createInterface({
+        input: fs.createReadStream('./../input.txt'),
+        output: process.stdout,
+        terminal: false
+    });
     
-//     rl.on('line', (line) => {
-//         const fields = line.split(' ');
-//         reports.push(fields.map(Number));
-//     });
+    rl.on('line', (line) => {
+        const fields = line.split(' ');
+        reports.push(fields.map(Number));
+    });
 
-//     await new Promise((resolve) => rl.on('close', resolve));
+    await new Promise((resolve) => rl.on('close', resolve));
 
-//     return reports;
-// }
-// const reports = await processInputFile();
-// console.log( reports );
-const reports = [[
-    42, 44, 47, 49, 51, 52, 54, 52
-  ]]
+    return reports;
+}
+const reports = await processInputFile();
 
 let safeReport = 0; // total num of safe reports
 
 reports.forEach((report) => {
-    let status; // can be 'increasing', 'decreasing'
+    let status = null; // can be 'increasing', 'decreasing'
     let safe = true; // if still true at the end, add the point
 
-    for (let i = 0; i < report.length; i++) {
+    for (let i = 1; i < report.length; i++) {
+        const prevLevel = report[i-1];
         const currentLevel = report[i];
-        console.log("current level =", currentLevel);
+        // console.log("current level =", currentLevel, "previous level =", prevLevel);
 
-        if (i > 0) {
-            const prevLevel = report[i-1];
-            console.log("prev level =", prevLevel);
-            // 2 consecutive nums can be equal or different by more than 3
-            if ((prevLevel === currentLevel) || (Math.abs(prevLevel - currentLevel) > 3)) {
-                console.log("NUM ERROR");
-                safe = false;
-            // change in status from increasing -> decreasing
-            } else if ((prevLevel > currentLevel) && status === 'decreasing') {
-                console.log("Status ERROR 1");
-                safe = false;
-            // change in status from decreasing -> increasing
-            } else if ((prevLevel < currentLevel) && status === 'increasing') {
-                console.log("Status ERROR 2");
-                safe = false;
-            }
-        }
-        if (!safe) {
-            console.log('NOT SAFE')
+        const diff = prevLevel - currentLevel
+
+        // make sure difference in numbers exists and isn't larger than 3
+        if (Math.abs(diff) === 0 || Math.abs(diff) > 3) {
+            safe = false;
+            console.log("NUMBER PROBLEM")
             break;
         }
-        
+        // determining the sequence type
+        if (diff > 0) {
+            // should be decreasing since the prev sequence was decreasing
+            if (status === 'increasing') {
+                safe = false;
+                break;
+            }
+            status = 'decreasing' // setting if not already set
+        } else if (diff < 0) {
+            // should be increasing since prev sequence was increasing
+            if (status === "decreasing") {
+                safe = false;
+                break;
+            }
+            status = 'increasing';
+        }
     }
-    // add the 'safe' counter here?
     if (safe) {
         safeReport++;
     }
 });
 
-console.log("Num of safe reports: ", safeReport);
+console.log("Number of safe reports: ", safeReport);
