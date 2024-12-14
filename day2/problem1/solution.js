@@ -21,45 +21,53 @@ export async function processInputFile() {
 }
 const reports = await processInputFile();
 
-let safeReport = 0; // total num of safe reports
+// const reports = [[1,2,3,5,9]]
 
-reports.forEach((report) => {
-    let status = null; // can be 'increasing', 'decreasing'
-    let safe = true; // if still true at the end, add the point
+export async function checkReports(reports) {
+    let safeReport = 0; // total num of safe reports
+    let unsafeReports = [];
+    
+    reports.forEach((report) => {
+        let status = null; // can be 'increasing', 'decreasing'
+        let safe = true; // if still true at the end, add the point
 
-    for (let i = 1; i < report.length; i++) {
-        const prevLevel = report[i-1];
-        const currentLevel = report[i];
-        // console.log("current level =", currentLevel, "previous level =", prevLevel);
+        for (let i = 1; i < report.length; i++) {
+            const prevLevel = report[i-1];
+            const currentLevel = report[i];
+            // console.log("previous level =", prevLevel, "current level =", currentLevel);
 
-        const diff = prevLevel - currentLevel
+            const diff = prevLevel - currentLevel
 
-        // make sure difference in numbers exists and isn't larger than 3
-        if (Math.abs(diff) === 0 || Math.abs(diff) > 3) {
-            safe = false;
-            console.log("NUMBER PROBLEM")
-            break;
-        }
-        // determining the sequence type
-        if (diff > 0) {
-            // should be decreasing since the prev sequence was decreasing
-            if (status === 'increasing') {
+            // make sure difference in numbers exists and isn't larger than 3
+            if (Math.abs(diff) === 0 || Math.abs(diff) > 3) {
                 safe = false;
                 break;
             }
-            status = 'decreasing' // setting if not already set
-        } else if (diff < 0) {
-            // should be increasing since prev sequence was increasing
-            if (status === "decreasing") {
-                safe = false;
-                break;
+            // determining the sequence type
+            if (diff > 0) {
+                // should be decreasing since the prev sequence was decreasing
+                if (status === 'increasing') {
+                    safe = false;
+                    break;
+                }
+                status = 'decreasing' // setting if not already set
+            } else if (diff < 0) {
+                // should be increasing since prev sequence was increasing
+                if (status === "decreasing") {
+                    safe = false;
+                    break;
+                }
+                status = 'increasing';
             }
-            status = 'increasing';
         }
-    }
-    if (safe) {
-        safeReport++;
-    }
-});
+        if (safe) {
+            safeReport++;
+        } else {
+            unsafeReports.push({ report, problemIndex });
+        }
+    });
+    return { safeReport, unsafeReports };
+};
 
-console.log("Number of safe reports: ", safeReport);
+// const { safeReport, unsafeReports } = await checkReports(reports);
+// console.log("Number of safe reports: ", safeReport);
